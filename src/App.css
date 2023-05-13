@@ -13,7 +13,11 @@
     box-sizing: border-box;
 }
 
-a:hover:not(.home-heading-container *) {
+.animated-number {
+    transition: all 0.3s ease-in-out !important;
+  }
+
+.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark a:hover {
     color: var(--bgPrimary) !important;
 }
 

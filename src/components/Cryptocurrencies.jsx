@@ -22,6 +22,15 @@ function Cryptocurrencies({ simplified }) {
     setCryptos(filteredData);
   }, [cryptosList, searchTerm]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Fetch updated data every 10 seconds
+      setCryptos(cryptosList?.data?.coins);
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(interval);
+  }, [cryptosList]);
+
   if (isFetching) return <Loader />;
 
   return (
@@ -43,6 +52,8 @@ function Cryptocurrencies({ simplified }) {
             : "N/A";
           const changeSign = Math.sign(changeValue);
 
+          const shouldMillifyPrice = currency.uuid !== "xz24e0BjL"; // special case for Shiba Inu
+
           return (
             <Col
               xs={24}
@@ -63,11 +74,16 @@ function Cryptocurrencies({ simplified }) {
                   }
                   hoverable
                 >
-                  <p>Price: {millify(currency.price, { precision: 3 })}</p>
-                  <p>
+                  <p className="animated-number">
+                    Price:{" "}
+                    {shouldMillifyPrice
+                      ? millify(currency.price, { precision: 3 })
+                      : currency.price}
+                  </p>
+                  <p className="animated-number">
                     Market Cap: {millify(currency.marketCap, { precision: 3 })}
                   </p>
-                  <p>
+                  <p className="animated-number">
                     Daily Change:{" "}
                     <span
                       className={
